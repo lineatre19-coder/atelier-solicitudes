@@ -313,8 +313,8 @@
           <option value="Cancelado">Cancelado</option>
         </select>
         <div class="export-btns">
-          <button class="btn btn-outline" id="exportExcelBtn">⬇ Excel</button>
-          <button class="btn btn-outline" id="exportPdfBtn">⬇ PDF</button>
+          <button class="btn btn-outline" id="exportExcelBtn">⬇️ Excel</button>
+          <button class="btn btn-outline" id="exportPdfBtn">⬇️ PDF</button>
           <button class="btn btn-ghost" id="refreshBtn">↻ Actualizar</button>
         </div>
       </div>
@@ -361,7 +361,7 @@
 <script>
 (() => {
   // ⚠️ PEGA AQUÍ la URL de tu Apps Script (termina en /exec). Ver Code.gs para las instrucciones.
-  const CONFIG = { API_URL: 'PEGA_AQUI_TU_URL_DE_APPS_SCRIPT' };
+  const CONFIG = { API_URL: 'https://script.google.com/macros/s/AKfycbxsPUeEOPsoYOSp71dt5ikG19aFU9k3DMS-CpmWtVxRfyunefrvgzWP70MePvd4aIkWGg/exec' };
 
   const STATUS_CLASS = { 'Solicitado':'solicitado', 'En trámite':'tramite', 'Cancelado':'cancelado' };
   const STATUS_COLOR = { 'Solicitado':'#3F6E52', 'En trámite':'#A9741F', 'Cancelado':'#963A3A' };
@@ -486,18 +486,17 @@
 
     if(e.key === 'Enter'){
       if(gunBuffer.length >= 3 && interval < 200){
-        if(isManualField) e.preventDefault(); // evita enviar el formulario si el foco quedó en otro campo
+        if(isManualField) e.preventDefault();
         applyScannedCode(gunBuffer);
       } else if(active && active.id === 'codPrenda'){
-        e.preventDefault(); // evita el submit prematuro al escribir el código a mano y dar Enter
+        e.preventDefault();
       }
       gunBuffer = '';
       return;
     }
 
     if(e.key.length === 1){
-      if(interval > 200) gunBuffer = ''; // pausa larga = no es la pistola, empieza de nuevo
-      // Si es un campo de texto manual y el ritmo es humano, no acumulamos (evita falsos positivos)
+      if(interval > 200) gunBuffer = '';
       if(isManualField && interval > 60 && gunBuffer.length === 0) return;
       gunBuffer += e.key;
     }
@@ -638,7 +637,7 @@
     ws['!cols'] = HEADERS.map(() => ({ wch: 18 }));
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, 'Solicitudes');
-    XLSX.writeFile(wb, `solicitudes_${new Date().toISOString().slice(0,10)}.xlsx`);
+    XLSX.writeFile(wb, solicitudes_${new Date().toISOString().slice(0,10)}.xlsx);
     showToast('Excel descargado ✓');
   });
 
@@ -657,7 +656,7 @@
       headStyles: { fillColor: [201,162,75], textColor: [255,255,255] },
       alternateRowStyles: { fillColor: [250,247,240] }
     });
-    doc.save(`solicitudes_${new Date().toISOString().slice(0,10)}.pdf`);
+    doc.save(solicitudes_${new Date().toISOString().slice(0,10)}.pdf);
     showToast('PDF descargado ✓');
   });
 
